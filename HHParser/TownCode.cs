@@ -25,7 +25,7 @@ namespace HHParser
         {
             var e = townTuple.Where(x => x.TownName.ToLower().Contains(townName.ToLower()));
             if (e.Count() == 0)
-                throw new ArgumentException("Введено неверное название города или этот город еще недоступен для парсинга");
+                throw new InvalidTownException("Введено неверное название города или этот город еще недоступен для парсинга");
             if (e.Count() > 1)
                 return -1;
             return e.First().Code;

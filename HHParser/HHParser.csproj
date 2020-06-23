@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>HHParser.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AngleSharp, Version=0.14.0.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
       <HintPath>..\packages\AngleSharp.0.14.0\lib\net472\AngleSharp.dll</HintPath>
@@ -60,7 +63,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HHParser.cs" />
-    <Compile Include="IParser.cs" />
+    <Compile Include="Parser.cs" />
+    <Compile Include="InvalidTownException.cs" />
+    <Compile Include="IParse.cs" />
     <Compile Include="IVacancy.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

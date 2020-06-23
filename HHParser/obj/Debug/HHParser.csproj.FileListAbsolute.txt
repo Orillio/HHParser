@@ -14,3 +14,19 @@ D:\Ян\Desktop\Skillbox C#\19 Урок C#\HHParser\HHParser\bin\Debug\System.Ru
 D:\Ян\Desktop\Skillbox C#\19 Урок C#\HHParser\HHParser\obj\Debug\HHParser.csproj.CopyComplete
 D:\Ян\Desktop\Skillbox C#\19 Урок C#\HHParser\HHParser\obj\Debug\HHParser.exe
 D:\Ян\Desktop\Skillbox C#\19 Урок C#\HHParser\HHParser\obj\Debug\HHParser.pdb
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\obj\Debug\HHParser.csprojAssemblyReference.cache
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\obj\Debug\HHParser.csproj.CoreCompileInputs.cache
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\obj\Debug\HHParser.exe
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\obj\Debug\HHParser.pdb
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\bin\Debug\HHParser.exe.config
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\bin\Debug\HHParser.exe
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\bin\Debug\HHParser.pdb
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\bin\Debug\AngleSharp.dll
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\bin\Debug\AngleSharp.Scripting.JavaScript.dll
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\bin\Debug\jint.dll
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\bin\Debug\System.Text.Encoding.CodePages.dll
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\bin\Debug\AngleSharp.xml
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\bin\Debug\AngleSharp.Scripting.JavaScript.xml
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\pc\Desktop\C#\19 Урок C#\HHParser\HHParser\obj\Debug\HHParser.csproj.CopyComplete

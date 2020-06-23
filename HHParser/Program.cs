@@ -9,44 +9,26 @@ using AngleSharp.Html.Parser;
 
 namespace HHParser
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static async Task Main()
         {
             Console.OutputEncoding = Encoding.UTF8;
-            var page = "https://rostov.hh.ru/vacancy/37453033?query=C%23%20разработчик%20ростов";
-            var parser = new HtmlParser();
-            StringBuilder sb = new StringBuilder();
 
-            var config = Configuration.Default.WithDefaultLoader();
-            var document = BrowsingContext.New(config).OpenAsync(page).Result;
+            HHParser ParseMode = new HHParser();
 
-            var result = document.Body.QuerySelectorAll(".g-user-content");
+            Parser parser = new Parser(ParseMode, "Ростов");
+            parser.ChangeParseTown("Москва");
 
-            var strongs = result.Children("strong");
+            var result = await parser.GetOnePageVacanciesAsync("c разработчик", 2);
 
-            sb.Append($"{strongs.ToList()[0].Text()}\n\n");
-
-            foreach (var uls in result.Children("ul").ToList()[0].Children)
+            foreach (var item in result)
             {
-                sb.Append(uls.Text() + "\n");
+                Console.WriteLine(item);
             }
-
-            sb.Append($"\n{strongs.ToList()[1].Text()}\n\n");
-
-            foreach (var uls in result.Children("ul").ToList()[1].Children)
-            {
-                sb.Append(uls.Text() + "\n");
-            }
-
-            sb.Append($"\n{strongs.ToList()[2].Text()}\n\n");
-
-            foreach (var uls in result.Children("ul").ToList()[2].Children)
-            {
-                sb.Append(uls.Text() + "\n");
-            }
-            Console.WriteLine(sb);
+            //Console.WriteLine(sb);
             Console.ReadKey();
         }
+        
     }
 }

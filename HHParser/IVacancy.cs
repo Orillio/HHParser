@@ -8,8 +8,10 @@ namespace HHParser
 {
     interface IVacancy
     {
+        string Name { get; set; }
         string Page { get; set; }
         string Town { get; set; }
         string Description { get; set; }
+        string ContactNumber { get; set; }
     }
 }
