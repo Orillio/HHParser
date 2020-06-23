@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Dom;
 using AngleSharp.Html.Parser;
+using HeadHunterParser.Parse;
 
-namespace HHParser
+namespace HeadHunterParser
 {
     public class Program
     {
@@ -15,18 +16,20 @@ namespace HHParser
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            HHParser ParseMode = new HHParser();
-
-            Parser parser = new Parser(ParseMode, "Ростов");
-            parser.ChangeParseTown("Москва");
-
-            var result = await parser.GetOnePageVacanciesAsync("c разработчик", 2);
-
-            foreach (var item in result)
+            Parser parser = new Parser(new HHParser());
+            try
             {
-                Console.WriteLine(item);
+                parser.ChangeParseTown("Москва");
             }
-            //Console.WriteLine(sb);
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            var result = await parser.GetVacancyAsync("java developer", 4);
+
+            Console.WriteLine(result);
+
             Console.ReadKey();
         }
         
