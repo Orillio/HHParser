@@ -13,9 +13,28 @@ namespace HeadHunterParser.Parse
     internal class HHParser : IParse
     {
         private string startPage;
+        private List<(char symbol, string unicode)> unicodeTable;
 
         public HHParser()
         {
+            unicodeTable = new List<(char symbol, string unicode)>
+            {
+                ('!',"%21"),
+                ('"',"%22"),
+                ('#',"%23"),
+                ('$',"%24"),
+                ('%',"%25"),
+                ('&',"%26"),
+                ('\'',"%27"),
+                ('(',"%28"),
+                (')',"%29"),
+                ('*',"%30"),
+                ('+',"%31"),
+                (',',"%32"),
+                ('-',"%33"),
+                ('.',"%34"),
+                ('/',"%35"),
+            };
             startPage = "https://rostov.hh.ru/search/vacancy?";
         }
 
@@ -33,7 +52,23 @@ namespace HeadHunterParser.Parse
 
             foreach (var item in splittedText)
             {
-                page += $"{item}+";
+                foreach (var symbol in item)
+                {
+                    bool flag = false;
+                    foreach (var symb in unicodeTable)
+                    {
+                        if (symbol == symb.symbol)
+                        {
+                            page += $"{symb.unicode}";
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (flag)
+                        continue;
+                    page += $"{symbol}";
+                }
+                page += $"+";
             }
 
             List<string> allLinks = new List<string>();

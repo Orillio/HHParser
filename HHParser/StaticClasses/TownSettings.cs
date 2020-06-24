@@ -14,15 +14,24 @@ namespace HeadHunterParser.Static
 
         static TownSettings()
         {
-            townTuple = new List<(string TownName, int Code)>();
-            townTuple.Add(("Москва", 1));
-            townTuple.Add(("Санкт Петербург", 2));
-            townTuple.Add(("Санкт-Петербург", 2));
-            townTuple.Add(("Питер", 2));
-            townTuple.Add(("СПБ", 2));
-            townTuple.Add(("Екатеринбург", 3));
-            townTuple.Add(("Новосибирск", 4));
-            townTuple.Add(("Ростов", 76));
+            townTuple = new List<(string TownName, int Code)>()
+            {
+                ("Москва", 1),
+                ("Санкт Петербург", 2),
+                ("Санкт-Петербург", 2),
+                ("Питер", 2),
+                ("Екатеринбург", 3),
+                ("Новосибирск", 4),
+                ("Нижний Новгород", 66),
+                ("Нижний-Новгород", 66),
+                ("Казань", 88),
+                ("Челябинск", 104),
+                ("Омск", 68),
+                ("Самара", 78),
+                ("Пермь", 72),
+                ("Воронеж", 26),
+                ("Волгоград", 24),
+            };
         }
 
         public static int GetTownCode(string townName) =>

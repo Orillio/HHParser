@@ -17,7 +17,7 @@ namespace HeadHunterParser.Telegram
         public string Name { get; set; }
         public List<Vacancy> FavouriteVacancies { get; set; }
 
-        public List<(int MessageId, int Page)> MessageTuple { get; set; }
+        public (int MessageId, int Page) MessageTuple;
 
         public List<string> ReturnedVacancies { get; set; }
         public Parser Parser;
@@ -30,7 +30,6 @@ namespace HeadHunterParser.Telegram
             FavouriteVacancies = new List<Vacancy>();
             Parser = new Parser(mode);
             Messages = new List<Message>();
-            MessageTuple = new List<(int MessageId, int Page)>();
         }
     }
 }

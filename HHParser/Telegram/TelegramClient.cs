@@ -25,10 +25,35 @@ namespace HeadHunterParser.Telegram
             bot.StartReceiving();
         }
 
-        private void OnButtonPress(object sender, CallbackQueryEventArgs e)
+        private async void OnButtonPress(object sender, CallbackQueryEventArgs e)
         {
-            var user = Users.FindUser(e.CallbackQuery.Message.Chat.Id);
+            InlineKeyboardMarkup markup = new InlineKeyboardMarkup(new InlineKeyboardButton[]
+            {
+                InlineKeyboardButton.WithCallbackData("<"),
+                InlineKeyboardButton.WithCallbackData(">")
+            });
 
+            var user = Users.FindUser(e.CallbackQuery.Message.Chat.Id);
+            switch (e.CallbackQuery.Data)
+            {
+                case ">":
+                    user.MessageTuple.Page++;
+                    if (user.MessageTuple.Page == user.ReturnedVacancies.Count - 1)
+                        return;
+
+                    var nextVacancy = await user.Parser.GetVacancyAsync(user.ReturnedVacancies[user.MessageTuple.Page]);
+                    await bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, user.MessageTuple.MessageId, nextVacancy.ToString(), replyMarkup: markup);
+                    break;
+                case "<":
+                    if (user.MessageTuple.Page == 0) return;
+                    user.MessageTuple.Page--;
+
+                    var prevVacancy = await user.Parser.GetVacancyAsync(user.ReturnedVacancies[user.MessageTuple.Page]);
+                    await bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, user.MessageTuple.MessageId, prevVacancy.ToString(), replyMarkup: markup);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private async void MessageListener(object sender, MessageEventArgs e)
@@ -38,7 +63,13 @@ namespace HeadHunterParser.Telegram
 Полезные команды:
 /help - тут понятно)
 /find <ваш_запрос> - поиск вакансий по запросу
+/changetown <новый_город> - сменить поиск с текущего города на новый (город по умолчанию - Москва)
 ";
+            InlineKeyboardMarkup markup = new InlineKeyboardMarkup(new InlineKeyboardButton[]
+            {
+                InlineKeyboardButton.WithCallbackData("<"),
+                InlineKeyboardButton.WithCallbackData(">")
+            });
             if (!Users.UserExists(e.Message.Chat.Id))
             {
                 Users.Add(new TelegramUser(new HHParser(), e.Message.From.FirstName, e.Message.Chat.Id));
@@ -59,11 +90,7 @@ namespace HeadHunterParser.Telegram
 
                 case "/find":
 
-                    InlineKeyboardMarkup markup = new InlineKeyboardMarkup(new InlineKeyboardButton[]
-                    {
-                        InlineKeyboardButton.WithCallbackData("<"),
-                        InlineKeyboardButton.WithCallbackData(">")
-                    });
+                    await bot.DeleteMessageAsync(e.Message.Chat.Id, e.Message.MessageId);
                     newtext.RemoveAt(0);
                     var request = newtext.Count != 0
                         ? newtext.Aggregate((item1, item2) => item1 + " " + item2)
@@ -81,10 +108,43 @@ namespace HeadHunterParser.Telegram
                         return;
                     }
                     user.ReturnedVacancies = temp.ToList();
-                    await bot.DeleteMessageAsync(e.Message.Chat.Id, e.Message.MessageId);
                     var message = await bot.EditMessageTextAsync(e.Message.Chat.Id, search.MessageId,
                         user.Parser.GetVacancyAsync(user.ReturnedVacancies[0]).Result.ToString(), replyMarkup: markup);
-                    user.MessageTuple.Add((message.MessageId, 0));
+
+                    if (user.MessageTuple.MessageId == default)
+                    {
+                        user.MessageTuple.MessageId = message.MessageId;
+                        user.MessageTuple.Page = 0;
+                        break;
+                    }
+                    else
+                    {
+                        await bot.DeleteMessageAsync(e.Message.Chat.Id, user.MessageTuple.MessageId);
+                        user.MessageTuple.MessageId = message.MessageId;
+                        user.MessageTuple.Page = 0;
+                        break;
+                    }
+
+                case "/changetown":
+                    newtext.RemoveAt(0);
+                    var newTown = newtext.Count != 0
+                        ? newtext.Aggregate((item1, item2) => item1 + " " + item2)
+                        : null;
+                    if (newTown == null)
+                    {
+                        await bot.SendTextMessageAsync(e.Message.Chat.Id, "/changetown <новый_город>");
+                        return;
+                    }
+                    try
+                    {
+                        user.Parser.ChangeParseTown(newTown);
+                        await bot.SendTextMessageAsync(e.Message.Chat.Id, $"Вы сменили город на {user.Parser.CuurentTownName}");
+                    }
+                    catch (Exception ex)
+                    {
+                        await bot.SendTextMessageAsync(e.Message.Chat.Id, ex.Message);
+                        return;
+                    }
                     break;
 
                 default:

@@ -19,7 +19,7 @@ namespace HeadHunterParser
             Console.OutputEncoding = Encoding.UTF8;
             Parser parser = new Parser(new HHParser());
             TelegramClient client = new TelegramClient("1213550787:AAFWqoh4JdFZttGM7z5SmjQSWfvWTeOOQo8");
-            Console.ReadKey();
+            Console.ReadLine();
         }
         
     }
