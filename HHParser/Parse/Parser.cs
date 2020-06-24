@@ -32,12 +32,12 @@ namespace HeadHunterParser.Parse
             await _parseMode.GetJobLinksAsync(stringRequest, _townName);
 
         /// <summary>
-        /// Получает информацию о вакансии по ее номеру в поиске HH.ru
+        /// Получает информацию о вакансии по ее ссылке на сайте hh.ru
         /// </summary>
-        /// <param name="request">Запрос</param>
+        /// <param name="address">Запрос</param>
         /// <param name="page">Номер страницы</param>
-        public async Task<Vacancy> GetVacancyAsync(string request, int page) =>
-            await _parseMode.GetVacancyAsync(request, _townName, page);
+        public async Task<Vacancy> GetVacancyAsync(string address) =>
+            await _parseMode.GetVacancyAsync(address, _townName);
 
     }
 }

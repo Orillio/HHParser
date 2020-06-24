@@ -25,10 +25,10 @@ namespace HeadHunterParser.Parse
         public override string ToString()
         {
             if (Page == null || Name == null || Town == null || Requirements == null || Description == null)
-                return "Не все поля вакансии заполнены";
+                return $"Вакансия: {Name}\n\nОписание недоступно\n\n{Page}";
             return $"Вакансия: {Name}\n\nГород: {Town}\n\nУсловия:\n\n{Requirements}Описание:\n\n{Description}" +
                 $"Контакты:\n{(Contacts == null ? "Нет. Перейдите на сайт чтобы оставить отклик на вакансию" : Contacts)}" +
-                $"\n\n{(PhoneNumber == null ? string.Empty : PhoneNumber)}";
+                $"\n\n{(PhoneNumber == null ? string.Empty : PhoneNumber)}\n{Page}";
                 
         }
     }

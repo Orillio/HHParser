@@ -9,6 +9,6 @@ namespace HeadHunterParser.Parse
     public interface IParse
     {
         Task<IEnumerable<string>> GetJobLinksAsync(string stringRequest, string townName);
-        Task<Vacancy> GetVacancyAsync(string stringRequest, string townName, int vacancyNumber);
+        Task<Vacancy> GetVacancyAsync(string address, string townName);
     }
 }

@@ -7,29 +7,18 @@ using AngleSharp;
 using AngleSharp.Dom;
 using AngleSharp.Html.Parser;
 using HeadHunterParser.Parse;
+using HeadHunterParser.Telegram;
+using Telegram.Bot;
 
 namespace HeadHunterParser
 {
     public class Program
     {
-        public static async Task Main()
+        public static void Main()
         {
             Console.OutputEncoding = Encoding.UTF8;
-
             Parser parser = new Parser(new HHParser());
-            try
-            {
-                parser.ChangeParseTown("Москва");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            var result = await parser.GetVacancyAsync("java developer", 4);
-
-            Console.WriteLine(result);
-
+            TelegramClient client = new TelegramClient("1213550787:AAFWqoh4JdFZttGM7z5SmjQSWfvWTeOOQo8");
             Console.ReadKey();
         }
         

@@ -1,10 +1,12 @@
 ﻿using AngleSharp;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
+using HeadHunterParser.Exceptions;
 using HeadHunterParser.Static;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Telegram.Bot.Exceptions;
 
 namespace HeadHunterParser.Parse
 {
@@ -16,15 +18,7 @@ namespace HeadHunterParser.Parse
         {
             startPage = "https://rostov.hh.ru/search/vacancy?";
         }
-        static string request;
-        List<string> links;
 
-        /// <summary>
-        /// Получает все ссылки на вакансии в пределах одного запроса
-        /// </summary>
-        /// <param name="request">Запрос</param>
-        /// <param name="townName">Город</param>
-        /// <returns></returns>
         public async Task<IEnumerable<string>> GetJobLinksAsync(string request, string townName)
         {
             int towncode = -1;
@@ -57,26 +51,27 @@ namespace HeadHunterParser.Parse
             return allLinks;
         }
 
-        public async Task<Vacancy> GetVacancyAsync(string stringRequest, string townName, int vacancyNumber)
+        public async Task<Vacancy> GetVacancyAsync(string address, string townName)
         {
-            vacancyNumber--; // 
-            if (request != stringRequest)
-            {
-                request = stringRequest;
-                var r = await GetJobLinksAsync(stringRequest, townName);
-                links = r.ToList();
-            }
             var document = await BrowsingContext.New(Configuration.Default.WithDefaultLoader())
-                .OpenAsync(links[vacancyNumber]);
+                .OpenAsync(address) ?? throw new InvalidAddressException("Неправильный адрес");
+
             Vacancy newVacancy = new Vacancy();
-            newVacancy.Page = links[vacancyNumber];
+            newVacancy.Page = address;
             newVacancy.Name = document.Title;
             newVacancy.Town = townName;
             newVacancy.Requirements += $"Требуемый опыт работы: {document.QuerySelector("span[data-qa='vacancy-experience']").TextContent}\n\n";
             newVacancy.Requirements += $"{document.QuerySelector("p[data-qa='vacancy-view-employment-mode']").TextContent}\n\n";
 
+            int countParagraphs = 0;
             foreach (var element in document.QuerySelectorAll(".g-user-content[data-qa='vacancy-description']").Children($"{null}"))
             {
+                countParagraphs++;
+                if (countParagraphs > 4)
+                {
+                    newVacancy.Description += $"Для более подробного описания загляните на сайт вакансии\n\n";
+                    break;
+                }
                 if (element.NodeName.ToLower() == "ul")
                 {
                     int count = 1;
@@ -87,16 +82,14 @@ namespace HeadHunterParser.Parse
                     newVacancy.Description += "\n";
                 }
                 else
-                {
                     newVacancy.Description += $"{element.TextContent}\n\n";
-                }
 
             }
             try
             {
                 newVacancy.PhoneNumber = document.QuerySelector(".vacancy-contacts__phone-mobile").Text();
             }
-            catch (System.Exception)
+            catch
             {
                 newVacancy.PhoneNumber = null;
             }
@@ -112,6 +105,5 @@ namespace HeadHunterParser.Parse
             return newVacancy;
 
         }
-
     }
 }
